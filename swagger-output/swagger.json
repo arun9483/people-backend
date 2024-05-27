@@ -1,0 +1,347 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Title": {
+				"enum": [
+					"Miss",
+					"Mr.",
+					"Ms."
+				],
+				"type": "string"
+			},
+			"Person": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"title": {
+						"$ref": "#/components/schemas/Title"
+					},
+					"countryCode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"firstName",
+					"lastName",
+					"email",
+					"title",
+					"countryCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Error": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"stack": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Person.Exclude_keyofPerson.id__": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"title": {
+						"$ref": "#/components/schemas/Title"
+					},
+					"countryCode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"email",
+					"title",
+					"countryCode"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_Person.id_": {
+				"$ref": "#/components/schemas/Pick_Person.Exclude_keyofPerson.id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "people-backend",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/people": {
+			"get": {
+				"operationId": "GetPeople",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Person"
+									},
+									"type": "array"
+								},
+								"examples": {
+									"Example 1": {
+										"value": [
+											{
+												"id": "123e4567-e89b-12d3-a456-426614174000",
+												"title": "Mr.",
+												"firstName": "John",
+												"lastName": "Doe",
+												"email": "john.doe@example.com",
+												"countryCode": "US"
+											},
+											{
+												"id": "123e4567-e89b-12d3-a456-426614174001",
+												"title": "Ms.",
+												"firstName": "Jane",
+												"lastName": "Smith",
+												"email": "jane.smith@example.com",
+												"countryCode": "IN"
+											}
+										]
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreatePerson",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Person"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"id": "123e4567-e89b-12d3-a456-426614174000",
+											"title": "Mr.",
+											"firstName": "John",
+											"lastName": "Doe",
+											"email": "john.doe@example.com",
+											"countryCode": "US"
+										}
+									}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_Person.id_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/people/{id}": {
+			"get": {
+				"operationId": "GetPerson",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Person"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"id": "123e4567-e89b-12d3-a456-426614174000",
+											"title": "Mr.",
+											"firstName": "John",
+											"lastName": "Doe",
+											"email": "john.doe@example.com",
+											"countryCode": "US"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Person not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "UpdatePerson",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Person"
+								},
+								"examples": {
+									"Example 1": {
+										"value": {
+											"title": "Ms.",
+											"firstName": "Jane",
+											"lastName": "Doe",
+											"email": "jane.doe@example.com",
+											"countryCode": "US"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Person not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Omit_Person.id_"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeletePerson",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"404": {
+						"description": "Person not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Error"
+								},
+								"examples": {
+									"Example 1": {}
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
