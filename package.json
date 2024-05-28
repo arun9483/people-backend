@@ -5,8 +5,11 @@
   "scripts": {
     "tsoa:spec": "tsoa spec",
     "tsoa:routes": "tsoa routes",
-    "prestart": "npm run tsoa:spec && npm run tsoa:routes",
-    "start": "ts-node src/index.ts"
+    "prestart": "tsoa spec-and-routes",
+    "start": "ts-node src/index.ts",
+    "build": "tsoa spec-and-routes && tsc",
+    "preprod": "npm run build",
+    "prod": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,13 +22,13 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "swagger-ui-express": "^5.0.0",
-    "ts-node": "^10.9.2",
-    "tsoa": "^6.2.1",
-    "typescript": "^5.4.5"
+    "tsoa": "^6.2.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@types/body-parser": "^1.19.5",
-    "@types/swagger-ui-express": "^4.1.6"
+    "@types/swagger-ui-express": "^4.1.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }

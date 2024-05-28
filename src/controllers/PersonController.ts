@@ -10,6 +10,8 @@ import {
   Example,
   SuccessResponse,
   Response,
+  Res,
+  TsoaResponse,
 } from 'tsoa';
 
 import { Person, Title } from '../models';
@@ -57,9 +59,12 @@ export class PersonController extends Controller {
   })
   @Response<Error>(404, 'Person not found')
   @Get('{id}')
-  public async getPerson(@Path() id: string): Promise<Person> {
+  public async getPerson(
+    @Path() id: string,
+    @Res() notFound: TsoaResponse<404, { message: string }>
+  ): Promise<Person> {
     const person = people.find((p) => p.id === id);
-    if (!person) throw new Error('Person not found');
+    if (!person) return notFound(404, { message: 'Person not found' });
     return person;
   }
 
@@ -93,10 +98,12 @@ export class PersonController extends Controller {
   @Put('{id}')
   public async updatePerson(
     @Path() id: string,
-    @Body() body: Omit<Person, 'id'>
+    @Body() body: Omit<Person, 'id'>,
+    @Res() notFound: TsoaResponse<404, { message: string }>
   ): Promise<Person> {
     const personIndex = people.findIndex((p) => p.id === id);
-    if (personIndex === -1) throw new Error('Person not found');
+    if (personIndex === -1)
+      return notFound(404, { message: 'Person not found' });
     const updatedPerson = { id, ...body };
     people[personIndex] = updatedPerson;
     return updatedPerson;
@@ -104,9 +111,13 @@ export class PersonController extends Controller {
 
   @Response<Error>(404, 'Person not found')
   @Delete('{id}')
-  public async deletePerson(@Path() id: string): Promise<void> {
+  public async deletePerson(
+    @Path() id: string,
+    @Res() notFound: TsoaResponse<404, { message: string }>
+  ): Promise<void> {
     const personIndex = people.findIndex((p) => p.id === id);
-    if (personIndex === -1) throw new Error('Person not found');
+    if (personIndex === -1)
+      return notFound(404, { message: 'Person not found' });
     people.splice(personIndex, 1);
   }
 }
