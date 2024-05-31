@@ -19,6 +19,7 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.12.12",
     "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "swagger-ui-express": "^5.0.0",
@@ -27,8 +28,10 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
     "@types/swagger-ui-express": "^4.1.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
-  }
+  },
+  "packageManager": "yarn@3.4.1+sha512.a333bf9c2557d71f5ba87dd1446cde24bb9c35301ec29dd2baba577b3f9d1ab61348b66a1324de9088c40a996c5b9203794da8bf14cab9fae6a6eccc00cb8078"
 }
