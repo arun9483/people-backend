@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
 
 import { RegisterRoutes } from './routes/routes';
@@ -9,6 +10,8 @@ import { RegisterRoutes } from './routes/routes';
 import * as swaggerDocument from '../swagger-output/swagger.json';
 
 const app = express();
+app.use(cors());
+
 const port = process.env.PORT || 2000;
 
 app.use(bodyParser.json());
